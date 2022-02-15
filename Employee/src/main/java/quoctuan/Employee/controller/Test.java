@@ -8,6 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -23,7 +24,7 @@ public class Test {
 	
 	@Autowired
 	EmployeeServiceImpl employeeServiceImpl;
-	@RequestMapping(value= {"/list"}, method= RequestMethod.GET, 
+	@RequestMapping(value= {"/abc"}, method= RequestMethod.GET, 
 			produces= {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
 	public List<EmployeeEntity> list(Model model) {
 		List<EmployeeEntity> lsEmployee = employeeServiceImpl.findAllEmployee();
@@ -44,7 +45,17 @@ public class Test {
 		return objEmployee;
 	}
 
-	
+	@RequestMapping(value= {"/employees"}, method= RequestMethod.POST , produces= {
+			MediaType.APPLICATION_JSON_VALUE , MediaType.APPLICATION_XML_VALUE
+		})
+		public List<EmployeeEntity> createEmployee(@RequestBody EmployeeEntity e){
+		
+		System.out.println("--- " + e.getName() + " ---");
+		employeeServiceImpl.addEmployee(e);
+		List<EmployeeEntity> lsEmployee = employeeServiceImpl.findAllEmployee();
+		return lsEmployee;
+		
+	}
 	
 	
 }
