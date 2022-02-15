@@ -24,7 +24,7 @@ public class Test {
 	
 	@Autowired
 	EmployeeServiceImpl employeeServiceImpl;
-	@RequestMapping(value= {"/abc"}, method= RequestMethod.GET, 
+	@RequestMapping(value= {"/employees"}, method= RequestMethod.GET, 
 			produces= {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
 	public List<EmployeeEntity> list(Model model) {
 		List<EmployeeEntity> lsEmployee = employeeServiceImpl.findAllEmployee();
@@ -67,6 +67,17 @@ public class Test {
 		List<EmployeeEntity> lsEmployee = employeeServiceImpl.findAllEmployee();
 		return lsEmployee;
 		
+	}
+	
+	@RequestMapping(value= {"/employees/{id}"}, method= RequestMethod.DELETE,
+			produces= {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+	public String deleteEmployee(@PathVariable("id") int id) {
+		
+		employeeServiceImpl.deleteEmployee(id);
+		
+		String result = "Delete successfully!";
+		
+		return result;
 	}
 	
 }

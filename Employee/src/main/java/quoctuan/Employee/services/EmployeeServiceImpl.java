@@ -28,5 +28,13 @@ public class EmployeeServiceImpl implements EmployeeService {
 		employeeRespository.save(e);
 		
 	}
+	@Override
+	public void deleteEmployee(int id) {
+		// TODO Auto-generated method stub
+		EmployeeEntity e = new EmployeeEntity();
+		e = employeeRespository.findById(id).get();
+		employeeRespository.delete(e);
+		
+	}
 
 }
