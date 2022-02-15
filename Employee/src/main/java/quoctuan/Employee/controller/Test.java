@@ -57,5 +57,16 @@ public class Test {
 		
 	}
 	
+	@RequestMapping(value= {"/employees"}, method= RequestMethod.PUT , produces= {
+			MediaType.APPLICATION_JSON_VALUE , MediaType.APPLICATION_XML_VALUE
+		})
+		public List<EmployeeEntity> updateEmployee(@RequestBody EmployeeEntity e){
+		
+		System.out.println("--- " + e.getName() + " ---");
+		employeeServiceImpl.addEmployee(e);
+		List<EmployeeEntity> lsEmployee = employeeServiceImpl.findAllEmployee();
+		return lsEmployee;
+		
+	}
 	
 }
