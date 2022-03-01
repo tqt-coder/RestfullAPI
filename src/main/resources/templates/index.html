@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>AngularJS</title>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.7/angular.js"></script>
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+	integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+	crossorigin="anonymous" referrerpolicy="no-referrer" />
+<script th:src="@{/js/main.js}"></script>
+<link th:href="@{/css/style.css}" rel="stylesheet" />
+</head>
+<body ng-app="EmployeeManagement" ng-controller="EmployeeController">
+	<h2>The project Restfull API with angular js</h2>
+	<form ng-submit="employeeSubmit()">
+		<table class="table">
+			<tr>
+				<td>EmployeeID</td>
+				<td>{{employeeForm.id}}</td>
+			</tr>
+			<tr>
+				<td>Emp No</td>
+				<td><input type="text" ng-model="employeeForm.name" /></td>
+			</tr>
+			<tr>
+				<td>Emp Name</td>
+				<td><input type="text" ng-model="employeeForm.password" /></td>
+			</tr>
+			<tr>
+				<td><button type="submit">Submit</button></td>
+			</tr>
+		</table>
+
+	</form>
+	</br>
+	</br>
+	<div>
+		<table class="table">
+			<tr>
+				<td>#</td>
+				<td>Name</td>
+				<td>Password</td>
+				<td>Action</td>
+			</tr>
+			<tr ng-repeat="employee in employees">
+				<td>{{employee.id}}</td>
+				<td>{{employee.name}}</td>
+				<td>{{employee.password}}</td>
+				
+				<td>
+					<a ng-click="editEmployee(employee)" href="#">
+						<i class="fa fa-edit"></i>Edit
+					</a> 
+					<a ng-click="deleteEmployee(employee.id)" href="#">
+						<i class="fa-solid fa-trash-can"></i>Delete
+					</a>
+				</td>
+			</tr>
+		</table>
+	</div>
+</body>
+</html>

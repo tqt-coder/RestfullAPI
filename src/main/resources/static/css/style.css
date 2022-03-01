@@ -1,0 +1,20 @@
+.table{
+	margin-left: 50px;
+	border-collapse: collapse;
+}
+td,th,tr{
+	border: 1px solid #000;
+}
+td,th{
+	width: 100px;
+}
+tr{
+	height: 40px;
+}
+td:nth-child(n+4),th:nth-child(n+4){
+	width: 200px;
+}
+td i{
+	padding: 10px 20px;
+	color: red;
+}
