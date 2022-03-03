@@ -6,11 +6,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import quoctuan.com.RestfullAPI.bean.AuthenticationResponse;
 import quoctuan.com.RestfullAPI.bean.EmployeeBean;
 import quoctuan.com.RestfullAPI.bean.ResultBean;
+import quoctuan.com.RestfullAPI.config.JwtUtil;
 import quoctuan.com.RestfullAPI.dao.UserDAO;
 import quoctuan.com.RestfullAPI.entities.EmployeeEntity;
 import quoctuan.com.RestfullAPI.entities.UserEntity;
@@ -85,16 +93,12 @@ public class RestAPI {
 		return rb;
 	}
 	
-	@RequestMapping(value={"/rest/login"} ,method = RequestMethod.POST
+	@RequestMapping(value={"/rest/login2"} ,method = RequestMethod.POST
 			)
 	public ResultBean checkLogin(@RequestBody UserEntity e, Model model){
 		
 		
 		log.info("userEn", e);
-//
-//		e.setUsername("admin");
-//		e.setPassword("admin");
-		
 		boolean re = userDao.checkLogin(e);
 		System.out.println(re);
 		ResultBean rb = new ResultBean();
@@ -104,5 +108,30 @@ public class RestAPI {
 		
 		model.addAttribute("rb", rb);
 		return rb;
+	}
+
+	@Autowired
+	private AuthenticationManager authenticationManager;
+
+	@Autowired
+	private UserDetailsService userDetailsService;
+
+	@Autowired
+	private JwtUtil jwtUtil;
+
+	@PostMapping(value = "/login")
+	public ResponseEntity<?> createAuthenticationToken(@RequestBody UserEntity user) throws Exception {
+		try{
+			authenticationManager.authenticate(
+					new UsernamePasswordAuthenticationToken(user.getUsername(),user.getPassword()));
+		}
+		catch(BadCredentialsException e){
+			throw new Exception("Incorrect username or password");
+		}
+		final UserDetails userDetails = userDetailsService.loadUserByUsername(user.getUsername());
+
+		final String jwt = jwtUtil.generateToken(userDetails);
+
+		return ResponseEntity.ok(new AuthenticationResponse(jwt));
 	}
 }
