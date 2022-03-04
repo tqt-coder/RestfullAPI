@@ -40,6 +40,11 @@ public class MainController {
 
 		return "<h2>Hello"+"</h2>";
 	}
+
+//	@GetMapping(value="/login1")
+//	public String viewLogin(){
+//		return "/login";
+//	}
 	
 	
 }
