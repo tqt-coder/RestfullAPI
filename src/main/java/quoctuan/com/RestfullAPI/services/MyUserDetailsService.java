@@ -30,10 +30,8 @@ public class MyUserDetailsService implements UserDetailsService {
 
         System.out.println("Found User: " + userEntity);
 
-        UserDetails userDetails;
-        userDetails = (UserDetails) new User(userEntity.getUsername(), //
-                userEntity.getPassword(), grantList);
+        return  new User(userEntity.getUsername(),userEntity.getPassword(), grantList);
 
-        return userDetails;
+//        return new User("tuan","tuan", new ArrayList<>());
     }
 }

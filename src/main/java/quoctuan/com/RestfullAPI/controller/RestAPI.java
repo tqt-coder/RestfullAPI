@@ -2,8 +2,8 @@ package quoctuan.com.RestfullAPI.controller;
 
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -16,10 +16,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import quoctuan.com.RestfullAPI.bean.AuthenticationResponse;
-import quoctuan.com.RestfullAPI.bean.EmployeeBean;
 import quoctuan.com.RestfullAPI.bean.ResultBean;
 import quoctuan.com.RestfullAPI.config.JwtUtil;
-import quoctuan.com.RestfullAPI.dao.UserDAO;
 import quoctuan.com.RestfullAPI.entities.EmployeeEntity;
 import quoctuan.com.RestfullAPI.entities.UserEntity;
 import quoctuan.com.RestfullAPI.services.EmployeeServiceImpl;
@@ -29,7 +27,7 @@ import quoctuan.com.RestfullAPI.services.UserServiceImpl;
 public class RestAPI {
 
 	
-	private static final Logger log = LoggerFactory.getLogger(RestAPI.class);
+//	private static final Logger log = LoggerFactory.getLogger(RestAPI.class);
 
 	@Autowired
 	private EmployeeServiceImpl employeeServiceImpl;
@@ -46,7 +44,7 @@ public class RestAPI {
 		try {
 			employeeServiceImpl.saveEmployee(e);
 			rb.setStatus(20);
-			rb.setSuccess(true);;
+			rb.setSuccess(true);
 			rb.setError("No error");
 		} catch (Exception e2) {
 			// TODO: handle exception
@@ -96,9 +94,6 @@ public class RestAPI {
 	@RequestMapping(value={"/rest/login2"} ,method = RequestMethod.POST
 			)
 	public ResultBean checkLogin(@RequestBody UserEntity e, Model model){
-		
-		
-		log.info("userEn", e);
 		boolean re = userDao.checkLogin(e);
 		System.out.println(re);
 		ResultBean rb = new ResultBean();
@@ -128,7 +123,8 @@ public class RestAPI {
 		catch(BadCredentialsException e){
 			throw new Exception("Incorrect username or password");
 		}
-		final UserDetails userDetails = userDetailsService.loadUserByUsername(user.getUsername());
+
+		UserDetails userDetails = userDetailsService.loadUserByUsername(user.getUsername());
 
 		final String jwt = jwtUtil.generateToken(userDetails);
 

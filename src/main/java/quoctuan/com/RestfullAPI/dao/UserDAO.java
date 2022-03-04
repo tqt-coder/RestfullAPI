@@ -23,7 +23,6 @@ public class UserDAO {
 	
 	@SuppressWarnings("unchecked")
 	public boolean checkLogin(UserEntity userForm) {
-		log.info("username: ",userForm.getUsername());
 		String sql = "select e from "+ UserEntity.class.getName()+" e where e.username=:username"
 				+ " and e.password = :password";
 		Query query = entityManager.createQuery(sql, UserEntity.class);
@@ -47,7 +46,7 @@ public class UserDAO {
 	public UserEntity findUser(String username) {
 		String hql = "select e from "+ UserEntity.class.getName()+ " e where e.username = :username";
 		
-		Query query = entityManager.createQuery(hql, String.class);
+		Query query = entityManager.createQuery(hql, UserEntity.class);
 		
 		query.setParameter("username", username);
 		

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 import quoctuan.com.RestfullAPI.bean.EmployeeBean;
 import quoctuan.com.RestfullAPI.entities.EmployeeEntity;
+import quoctuan.com.RestfullAPI.entities.UserEntity;
 import quoctuan.com.RestfullAPI.services.EmployeeServiceImpl;
 
 @Controller
@@ -41,10 +42,12 @@ public class MainController {
 		return "<h2>Hello"+"</h2>";
 	}
 
-//	@GetMapping(value="/login1")
-//	public String viewLogin(){
-//		return "/login";
-//	}
+	@GetMapping(value="/login")
+	public String viewLogin(Model model){
+		UserEntity us = new UserEntity();
+		model.addAttribute("userEntity",us);
+		return "/login";
+	}
 	
 	
 }

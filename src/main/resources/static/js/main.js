@@ -1,5 +1,12 @@
 var app = angular.module("EmployeeManagement", []);
+let getJwt = "";
 
+let localJwt = "Gril ";
+
+app.run(function ($http){
+	$http.defaults.headers.common.Authorization = localJwt + getJwt;
+})
+let jwt = "";
 app.controller("EmployeeController", function($scope, $http) {
 	$scope.employees = [];
 	$scope.employeeForm = {
@@ -11,7 +18,10 @@ app.controller("EmployeeController", function($scope, $http) {
 	function _refeshEmployeeData() {
 		$http({
 			method: 'GET',
-			url: '/rest/employees'
+			url: '/rest/employees',
+			headers: {
+				Authorization: `Bearer ${localStorage.getItem('access_token')}`
+			}
 		}).then(
 			function(res) {
 				$scope.employees = res.data;
@@ -27,9 +37,6 @@ app.controller("EmployeeController", function($scope, $http) {
 	
 	
 	$scope.editEmployee = function(e) {
-		/*this.employeeForm.id = e.id;
-		this.employeeForm.name = e.name;
-		this.employeeForm.password = e.password;*/
 		_createForm(e);
 		
 	}
@@ -44,7 +51,9 @@ app.controller("EmployeeController", function($scope, $http) {
 		_refeshEmployeeData();
 		_clearForm();
 
-	};
+	}
+
+
 	
 	function _error(res) {
 		//var data = res.data;
@@ -56,12 +65,12 @@ app.controller("EmployeeController", function($scope, $http) {
 	$scope.employeeSubmit = function() {
 		var method = "";
 		var url = "";
+		const accessToken = localStorage.getItem('access_token')
 		if ($scope.employeeForm.id == -1) {
 			method = "POST";
 			url = '/rest/employees';
 		} else {
 			method = "PUT";
-			url = '/rest/employees';
 
 		}
 		$http({
@@ -69,7 +78,8 @@ app.controller("EmployeeController", function($scope, $http) {
             url: url,
             data: angular.toJson($scope.employeeForm),
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+				'Authorization': 'Bearer ' + accessToken
             }
 		}).then(
 			function(){
@@ -80,8 +90,31 @@ app.controller("EmployeeController", function($scope, $http) {
 			//	_error();
 			})
 	};
-	
-	
+
+	$scope.loginForm = {
+		username: "",
+		password: ""
+	}
+
+	$scope.loginSubmit = function () {
+		var method = "POST";
+		var url = "/login";
+
+		$http({
+			method: method,
+			url: url,
+			data: angular.toJson($scope.loginForm),
+			headers: {
+				'Content-Type': 'application/json',
+			}
+		}).then(
+			function(res){
+				jwt = res.data.jwt;
+				localStorage.setItem("access_token", jwt);
+
+			},_error)
+
+	}
 	
 
 	function _clearForm() {
@@ -94,6 +127,9 @@ app.controller("EmployeeController", function($scope, $http) {
 		$http({
 			method: "DELETE",
 			url: "/rest/employees/" + id,
+			headers: {
+				Authorization: `Bearer ${localStorage.getItem('access_token')}`
+			}
 		}).then(
 			function(res) {
 				alert("Xóa thành công employee có mã " + id);
@@ -108,3 +144,4 @@ app.controller("EmployeeController", function($scope, $http) {
 
 
 })
+

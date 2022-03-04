@@ -6,16 +6,19 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Login</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.7/angular.js"></script>
+    <script th:src="@{/js/main.js}"></script>
 </head>
-<body>
-        <form th:action="@{/spring_login}" method="Post" action="#">
+
+<body ng-app="EmployeeManagement" ng-controller="EmployeeController">
+        <form ng-submit="loginSubmit()">
             <label>Username</label>
             <br>
-            <input type="text" placeholder="Enter username ..." name="username">
+            <input type="text" ng-model="loginForm.username"  placeholder="Enter username ..." name="username">
             <br>
             <label>Password</label>
             <br>
-            <input type="password" placeholder="Enter password ..." name="password">
+            <input type="password" ng-model="loginForm.password" placeholder="Enter password ..." name="password">
 
             <br><br>
             <button>Login</button>
